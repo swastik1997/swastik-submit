@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="photoDrive">
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="content/css/styles.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js "></script>
+</head>
+<body>
+	<div ng-controller="pdController">
+		Select: 
+		<button ng-click="php()">PHP</button>
+		<button ng-click="css()">C++</button>
+		<button ng-click="py()">PYTHON</button>
+		<button ng-click="java()">JAVA</button>
+
+		<p>{{ message }}</p>
+	</div>
+	<script>
+		var photoDrive = angular.module('photoDrive', []);
+		photoDrive.controller('pdController' , function($scope){
+			$scope.message = 'None';
+
+			$scope.php=function(){
+				$scope.message = 'PHP';
+			};
+			$scope.css=function(){
+				$scope.message = 'C++';
+			};
+			$scope.py=function(){
+				$scope.message = 'PYTHON';
+			};
+			$scope.java=function(){
+				$scope.message = 'JAVA';
+			};
+
+		});
+	</script>
+
+</body>
+</html>
+
+
+

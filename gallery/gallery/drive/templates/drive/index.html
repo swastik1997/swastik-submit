@@ -1,0 +1,5 @@
+<ul>
+	{% for user in all_users %}
+	<li><a href="/drive/{{ user.user_id }}/">{{ user.username }}</li>
+	{% endfor %}
+</ul>
