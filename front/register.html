@@ -1,0 +1,21 @@
+<div ng-controller="loginCtrl">
+	<form action="/" id="register">
+		Username: <input type="text" id="username" ng-model="username"><br>
+		First: <input type="text" id="first" ng-model="first"><br>
+		Last: <input type="text" id="last" ng-model="last"><br>
+		Email: <input type="text" id="email" ng-model="email"><br>
+		Geander: <select name="gender" ng-model="gender">
+				    <option value="male">Male</option>
+				    <option value="female">Female</option>
+				  </select><br>
+		Profile Picture: <input type="file" id="profilepic" ng-model="profilepic"><br>
+		Password: <input type="password" id="password" ng-model="password"><br><br>
+		<button type="button" ng-click="register()">Register</button><br><br>
+	</form>
+</div>
+
+<div>
+	<a href="#!/">
+		Login
+	</a>
+</div>

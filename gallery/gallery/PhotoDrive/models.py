@@ -50,10 +50,10 @@ class Album(models.Model):
 
 
 def upload_to(instance, filename):
-		return 'photo/%s/%s' % (instance.photo_id, filename)
+		return 'photo/%s' % ( filename)
 
 class Photo(models.Model):
-	photo_id=models.CharField(primary_key=True,max_length=250)
+	photo_id=models.AutoField(primary_key=True)
 	album_id=models.ForeignKey(Album,on_delete=models.CASCADE,related_name='photo_album')
 	description=models.CharField(max_length=250)
 	date=models.DateTimeField(auto_now_add=True)

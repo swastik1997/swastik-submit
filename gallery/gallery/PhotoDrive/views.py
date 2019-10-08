@@ -43,13 +43,13 @@ from .serializers import (
 	SetVisiblityAlbumSerializer,
 	SetVisiblityPhotoSerializer,
 	)
-from django.db.models import Q
 #from .permissions import IsOwnerOrReadOnly
+
 def home(request):
 	return render(request,'login.html')
 
 def logout(request):
-	if request.method == 'POST':
+	if request.method == 'GET':
 		del request.session['username']
 		return HttpResponseRedirect('../../')
 	else:
@@ -63,7 +63,7 @@ def login(request):
 			request.session['username']=username
 			return HttpResponseRedirect('../')
 		else:
-			return render(request,'login.html')
+			return HttpResponseRedirect('../../')
 	else:
 		return Http404.HttpResponseNotFound('<h1>Page not found</h1>')
 
@@ -358,4 +358,3 @@ class PhotoCreate(CreateAPIView):
 			}
 		)
 		return context
-
