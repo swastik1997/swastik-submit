@@ -4,7 +4,7 @@ from .models import User,Album,Photo
 class UserListSerializer(serializers.ModelSerializer):
 	class Meta:
 		model=User
-		fields=('username','profilepic')
+		fields=('username','first','last','profilepic')
 
 class UserDetailSerializer(serializers.ModelSerializer):
 

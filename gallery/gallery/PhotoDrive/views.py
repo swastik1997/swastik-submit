@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404 
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse,HttpResponseRedirect,HttpRequest
 from .models import User,Album,Photo
 from django.template import loader
 from django.contrib.auth.forms import UserCreationForm
@@ -43,34 +43,45 @@ from .serializers import (
 	SetVisiblityAlbumSerializer,
 	SetVisiblityPhotoSerializer,
 	)
+import json
 #from .permissions import IsOwnerOrReadOnly
+
+session={'username' : ''}
 
 def home(request):
 	return render(request,'login.html')
 
 def logout(request):
-	if request.method == 'GET':
-		del request.session['username']
-		return HttpResponseRedirect('../../')
+	if request.method == 'POST':
+		print(session['username'])
+		session['username']=''
+		return HttpResponse(status=200)
 	else:
-		return Http404.HttpResponseNotFound('<h1>Page not found</h1>')
+		return HttpResponse(status=404)
 
 def login(request):
+	
 	if request.method == 'POST':
-		username=request.POST.get('username')
+		user= json.loads(request.body)
+		username=user[0]['username']
 		psw=User.objects.get(username=username).password
-		if psw==request.POST.get('password'):
-			request.session['username']=username
-			return HttpResponseRedirect('../')
+		if psw==user[0]['password']:
+			print(request)
+			session['username']=username
+			print(request.session.keys())
+			return HttpResponse(status=200)
 		else:
-			return HttpResponseRedirect('../../')
+			return HttpResponse(status=401)
 	else:
-		return Http404.HttpResponseNotFound('<h1>Page not found</h1>')
+		return HttpResponse(status=404)
 
 class UserList(ListAPIView):
 
 	queryset=User.objects.all()
 	serializer_class=UserListSerializer
+	def get_queryset(self):
+		username = session['username']
+		return User.objects.filter(username=username)
 
 class UserDetail(RetrieveAPIView):
 
@@ -78,7 +89,7 @@ class UserDetail(RetrieveAPIView):
 	serializer_class=UserDetailSerializer
 	lookup_field='username'
 	def get_queryset(self):
-		username = self.kwargs['username']
+		username = session['username']
 		return User.objects.filter(username=username)
 
 class UserDelete(DestroyAPIView):
@@ -91,112 +102,110 @@ class UserUpdate(UpdateAPIView):
 
 	queryset=User.objects.all()
 	serializer_class=UserUpdateSerializer
-	permission_classes=[IsAuthenticatedOrReadOnly]
 	lookup_field='username'
 
 class UserCreate(CreateAPIView):
 
 	queryset=User.objects.all()
 	serializer_class=UserCreateSerializer
-	permission_classes=[IsAuthenticated,IsAdminUser]
 
 def likealbum(request,username,album_id):
 
 	album=Album.objects.get(album_id=album_id)
-	liked=album.liked.filter(username=request.session['username'])
+	liked=album.liked.filter(username=session['username'])
 	if liked == None:
-		album.liked.add(User.objects.get(username=request.session['username']))
+		album.liked.add(User.objects.get(username=session['username']))
 	return HttpResponseRedirect('../')
 
 
 def likephoto(request,photo_id,username,album_id):
 
 	photo=Photo.objects.get(photo_id=photo_id)
-	liked=photo.liked.filter(username=request.session['username'])
+	liked=photo.liked.filter(username=session['username'])
 	if liked == None:
-		photo.liked.add(User.objects.get(username=request.session['username']))
+		photo.liked.add(User.objects.get(username=session['username']))
 	return HttpResponseRedirect('../')
 
 def CanSetVisibleToAlbum(request,username,album_id):
 
-	if username==request.session['username']:
+	if username==session['username']:
 		return SetVisibleToAlbum.as_view()(request,username=username,album_id=album_id)
 	else:
 		return HttpResponseRedirect('../')
 
 def CanSetVisibleToPhoto(request,username,album_id,photo_id):
 
-	if username==request.session['username']:
+	if username==session['username']:
 		return SetVisibleToPhoto.as_view()(request,username=username,album_id=album_id,photo_id=photo_id)
 	else:
 		return HttpResponseRedirect('../')
 
 def CanSetVisiblityAlbum(request,username,album_id):
 
-	if username==request.session['username']:
+	if username==session['username']:
 		return SetVisiblityAlbum.as_view()(request,username=username,album_id=album_id)
 	else:
 		return HttpResponseRedirect('../')
 
 def CanSetVisiblityPhoto(request,username,album_id,photo_id):
 
-	if username==request.session['username']:
+	if username==session['username']:
 		return SetVisiblityPhoto.as_view()(request,username=username,album_id=album_id,photo_id=photo_id)
 	else:
 		return HttpResponseRedirect('../')
 
 def CanAlbumCreate(request,username):
 
-	if username==request.session['username']:
+	if username==session['username']:
 		return AlbumCreate.as_view()(request,username=username)
 	else:
 		return HttpResponseRedirect('../')
 
 def CanAlbumUpdate(request,username,album_id):
 
-	if username==request.session['username']:
+	if username==session['username']:
 		return AlbumUpdate.as_view()(request,username=username,album_id=album_id)
 	else:
 		return HttpResponseRedirect('../')
 
 def CanAlbumDelete(request,username,album_id):
 
-	if username==request.session['username']:
+	if username==session['username']:
 		return AlbumDelete.as_view()(request,username=username,album_id=album_id)
 	else:
 		return HttpResponseRedirect('../')
 		
 def CanPhotoCreate(request,username,album_id):
 
-	if username==request.session['username']:
+	if username==session['username']:
 		return PhotoCreate.as_view()(request,username=username,album_id=album_id)
 	else:
 		return HttpResponseRedirect('../')
 
 def CanPhotoUpdate(request,username,album_id,photo_id):
 
-	if username==request.session['username']:
+	if username==session['username']:
 		return PhotoUpdate.as_view()(request,username=username,album_id=album_id,photo_id=photo_id)
 	else:
 		return HttpResponseRedirect('../')
 
 def CanPhotoDelete(request,username,album_id,photo_id):
 
-	if username==request.session['username']:
+	if username==session['username']:
 		return PhotoDelete.as_view()(request,username=username,album_id=album_id,photo_id=photo_id)
 	else:
 		return HttpResponseRedirect('../')
 
 def CanUserUpdate(request,username):
 
-	if username==request.session['username']:
+	if username==session['username']:
 		return UserUpdate.as_view()(request,username=username)
 	else:
 		return HttpResponseRedirect('../')
 
 def CanUserDelete(request,username):
 
-	if username==request.session['username']:
+	if username==session['username']:
 		return UserDelete.as_view()(request,username=username)
 	else:
 		return HttpResponseRedirect('../')
@@ -205,7 +214,6 @@ class SetVisibleToAlbum(UpdateAPIView):
 
 	queryset=Album.objects.all()
 	serializer_class=SetVisibleToAlbumSerializer
-	permission_classes=[IsAuthenticated]
 	lookup_field='album_id'
 	def get_queryset(self):
 		album_id = self.kwargs['album_id']
@@ -215,7 +223,6 @@ class SetVisibleToPhoto(UpdateAPIView):
 
 	queryset=Photo.objects.all()
 	serializer_class=SetVisibleToPhotoSerializer
-	permission_classes=[IsAuthenticated]
 	lookup_field='photo_id'
 	def get_queryset(self):
 		photo_id = self.kwargs['photo_id']
@@ -225,7 +232,6 @@ class SetVisiblityAlbum(UpdateAPIView):
 
 	queryset=Album.objects.all()
 	serializer_class=SetVisiblityAlbumSerializer
-	permission_classes=[IsAuthenticated]
 	lookup_field='album_id'
 	def get_queryset(self):
 		album_id = self.kwargs['album_id']
@@ -235,7 +241,6 @@ class SetVisiblityPhoto(UpdateAPIView):
 
 	queryset=Photo.objects.all()
 	serializer_class=SetVisiblityPhotoSerializer
-	permission_classes=[IsAuthenticated]
 	lookup_field='photo_id'
 	def get_queryset(self):
 		photo_id = self.kwargs['photo_id']
@@ -247,7 +252,7 @@ class AlbumList(ListAPIView):
 	serializer_class=AlbumListSerializer
 	lookup_field='username'
 	def get_queryset(self):
-		user=self.request.session['username']
+		user=session['username']
 		username = self.kwargs['username']
 		if(username==user):
 			return Album.objects.filter(username=username)
@@ -268,21 +273,19 @@ class AlbumUpdate(UpdateAPIView):
 
 	queryset=Album.objects.all()
 	serializer_class=AlbumUpdateSerializer
-	permission_classes=[IsAuthenticatedOrReadOnly]
 	lookup_field='album_id'
 
 class AlbumCreate(CreateAPIView):
 
 	queryset=Album.objects.all()
 	serializer_class=AlbumCreateSerializer
-	permission_classes=[IsAuthenticated,IsAdminUser]
 	lookup_field='username'
 
 	def get_serializer_context(self):
 		context = super().get_serializer_context()
 		context.update(
 			{
-				"username": self.request.session['username']
+				"username": session['username']
 			}
 		)
 		return context
@@ -292,7 +295,7 @@ class PhotoList(ListAPIView):
 	serializer_class=PhotoListSerializer
 	lookup_field='album_id'
 	def get_queryset(self):
-		user=self.request.session['username']
+		user=session['username']
 		album_id = self.kwargs['album_id']
 		username = self.kwargs['username']
 		if(username==user):
@@ -317,7 +320,7 @@ class PhotoDetail(RetrieveAPIView):
 	serializer_class=PhotoDetailSerializer
 	lookup_field='photo_id'
 	def get_queryset(self):
-		user=self.request.session['username']
+		user=session['username']
 		username = self.kwargs['username']
 		photo_id = self.kwargs['photo_id']
 		if(username==user):
@@ -342,14 +345,12 @@ class PhotoUpdate(UpdateAPIView):
 	queryset=Photo.objects.all()
 	serializer_class=PhotoUpdateSerializer
 	lookup_field='photo_id'
-	permission_classes=[IsAuthenticatedOrReadOnly]
 
 class PhotoCreate(CreateAPIView):
 
 	queryset=Photo.objects.all()
 	serializer_class=PhotoCreateSerializer
 	lookup_field='album_id'
-	permission_classes=[IsAuthenticated,IsAdminUser]
 	def get_serializer_context(self):
 		context = super().get_serializer_context()
 		context.update(
