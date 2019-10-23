@@ -1,12 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title></title>
+	<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+		<title>LOGIN</title>
+
+		<!-- Google font -->
+		<link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
+
+		<!-- Font Awesome Icon -->
+		{% load staticfiles %}
+		<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+
+		<!-- Custom stlylesheet -->
+		<link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}"/>
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
 </head>
+
 <body>
+	<div>
 	<form action="PhotoDrive/login/" method="POST"> {% csrf_token %}
-		Login:<input type="text" name="username"><br>
-		Password:<input type="password" name="password"><br>
-		<input type="submit" name="submit">
+		<input class="input" type="text" name="username" placeholder="Username" required><br>
+		<input class="input" type="password" name="password" placeholder="Password"   required><br>
+		<button class="input">Login</button>
+		<button class="input"><a href="register/">Register</a></button>
 	</form>
+	</div>
 </body></html>

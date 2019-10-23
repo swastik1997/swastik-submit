@@ -9,6 +9,7 @@ urlpatterns = [
     path('PhotoDrive/', include('PhotoDrive.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', views.home,name="home"),
+    path('register/', views.register,name="home"),
 ]
 
 if settings.DEBUG:

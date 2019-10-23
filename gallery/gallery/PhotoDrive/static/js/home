@@ -1,0 +1,22 @@
+var username;
+
+function getUsername()
+{
+	var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() 
+    {
+        if (xhr.readyState == 4) 
+        {
+            var data = xhr.responseText;
+            makeUsername(data);
+        }
+    }
+    xhr.open('GET', '/../username/', true);
+    xhr.send(null);
+}
+
+function makeUsername()
+{
+	var temp=JSON.parse({"username":"swastik4945"});
+	document.getElementById('username').innerHTML=temp.username;
+}

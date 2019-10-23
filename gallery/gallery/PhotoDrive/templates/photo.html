@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+		<title>Photos</title>
+		<!-- Google font -->
+
+		<link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
+
+		<!-- Font Awesome Icon -->
+		{% load staticfiles %}
+		<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+
+		<!-- Custom stlylesheet -->
+		<link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}"/>
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		
+		<script type="text/javascript" src="{% static 'js/photo.js' %}"></script>
+</head>
+	<body onload="getAlbum();">
+		<!-- Header -->
+		<header >
+			<div >
+
+				<div >
+					<!-- Logo -->
+				<!-- Navigation -->
+				<nav >
+					<ul>
+						<li><a href="../">Home</a></li>
+						<li><a href="../../logout/">Logout</a></li>
+					</ul>
+				</nav>
+				<!-- /Navigation -->
+			</div>
+		</header>
+		<section>
+			<div>
+				<div id="photoDetail">
+					<h3>Photo</h3>
+					<h2 id="photoTitle"></h2>
+					<button id="likePhoto" >Like Photo</button>
+					<button id="editPhoto">Edit Photo</button>
+					<button id="deletePhoto">Delete Photo</button><br><br>
+					<img id="photo" src="" height="1000" width="1125">
+				</div>
+			</div>
+		</section>
+	</body>
+</html>

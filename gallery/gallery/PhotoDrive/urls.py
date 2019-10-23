@@ -6,10 +6,46 @@ urlpatterns = [
 	path('', 
 		PhotoDrive_views.UserList.as_view(),name="userlist"),
 
+	path('username/', 
+		PhotoDrive_views.Username.as_view(),name="username"),
+
+	path('usernamealbum/<int:album_id>/', 
+		PhotoDrive_views.UsernameAlbum.as_view(),name="usernameAlbum"),
+
+	path('usernamephoto/<int:photo_id>/', 
+		PhotoDrive_views.UsernamePhoto.as_view(),name="usernamePhoto"),
+
+	path('home/',
+		PhotoDrive_views.home_user,name="home"),
+
+	path('home/editUser/',
+		PhotoDrive_views.home_edit_user,name="home_edit_user"),
+
+	path('home/editAlbum/',
+		PhotoDrive_views.home_edit_album,name="home_edit_album"),
+
+	path('home/editPhoto/',
+		PhotoDrive_views.home_edit_photo,name="home_edit_photo"),
+
+	path('home/album/<str:username>/', 
+		PhotoDrive_views.isOwner,name="isOwner"),
+
+	path('home/album/', 
+		PhotoDrive_views.home_album,name="home_album"),
+
+	path('home/createAlbum/', 
+		PhotoDrive_views.home_create_album,name="home_album"),
+
+	path('home/createPhoto/', 
+		PhotoDrive_views.home_create_photo,name="home_photo"),
+
+	path('home/photo/', 
+		PhotoDrive_views.home_photo,name="home_photo"),
+
 	path('login/', 
 		PhotoDrive_views.login,name="login"),
 
-	path('logout/', 
+	path('logout/',
 		PhotoDrive_views.logout,name="logout"),
 
 	path('<str:username>/detail/', 

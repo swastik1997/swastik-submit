@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+		<title>Home</title>
+		<!-- Google font -->
+
+		<link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
+
+		<!-- Font Awesome Icon -->
+		{% load staticfiles %}
+		<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+
+		<!-- Custom stlylesheet -->
+		<link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}"/>
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		
+		<script type="text/javascript" src="{% static 'js/home.js' %}"></script>
+</head>
+	<body onload="getUsername();">
+		<!-- Header -->
+		<header>
+			<div>
+
+				<div>
+					<!-- Logo -->
+				<!-- Navigation -->
+				<nav >
+					<ul>
+						<li><img id="profile" src="" height="200" width="174"></li>
+						<li><a id="username"></a></li>
+						<li><a href="">Home</a></li>
+						<li><a href="../logout/">Logout</a></li>
+					</ul>
+				</nav>
+				<!-- /Navigation -->
+			</div>
+		</header>
+		<section>
+			<div>
+				<div id="albumList">
+					<h3>Albums</h3>
+					<h2 id="albumTitle"></h2>
+					<button id="editUser">Edit User</button>
+					<button id="createAlbum">Create Album</button><br><br>
+					<table id="albums"></table>
+				</div>
+			</div>
+		</section>
+	</body>
+</html>
+

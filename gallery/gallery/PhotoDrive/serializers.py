@@ -4,13 +4,28 @@ from .models import User,Album,Photo
 class UserListSerializer(serializers.ModelSerializer):
 	class Meta:
 		model=User
+		fields=('username','first','last','profilepic','gender')
+
+class UsernameSerializer(serializers.ModelSerializer):
+	class Meta:
+		model=User
 		fields=('username','profilepic')
+
+class UsernameAlbumSerializer(serializers.ModelSerializer):
+	class Meta:
+		model=Album
+		fields=('username','album_id')
+
+class UsernamePhotoSerializer(serializers.ModelSerializer):
+	class Meta:
+		model=Photo
+		fields=('photo_id','album_id')
 
 class UserDetailSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model=User
-		fields=('username','first','last','profilepic')
+		fields=('username','first','last','profilepic','gender')
 
 class UserUpdateSerializer(serializers.ModelSerializer):
 
@@ -22,7 +37,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model=User
-		fields=('first','last','profilepic','gender','email','password')
+		fields=('first','last','gender','email','password')
 
 class UserDeleteSerializer(serializers.ModelSerializer):
 
@@ -45,7 +60,7 @@ class AlbumUpdateSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model=Album
-		fields=('description','cover')
+		fields=('description','cover','visibleTo','visible')
 
 class AlbumDeleteSerializer(serializers.ModelSerializer):
 
@@ -68,7 +83,7 @@ class AlbumCreateSerializer(serializers.ModelSerializer):
 class PhotoListSerializer(serializers.ModelSerializer):
 	class Meta:
 		model=Photo
-		fields=['photo_id',]
+		fields='__all__'
 
 class PhotoDetailSerializer(serializers.ModelSerializer):
 	class Meta:
